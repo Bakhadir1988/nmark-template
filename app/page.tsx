@@ -4,8 +4,15 @@ import styles from "./page.module.css";
 import { useEffect, useState } from "react";
 import axiosInstance from "@/shared/tools/api";
 
+interface DataItem {
+  title: string;
+  items: {
+    content: string;
+  }[];
+}
+
 export default function Home() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<DataItem[] | null>(null);
 
   useEffect(() => {
     axiosInstance
@@ -22,19 +29,16 @@ export default function Home() {
 
   return (
     <div>
-      {data?.map((item: any, index: number) => (
-        <>
-          <hr />
-          <div key={index} className={styles.main}>
-            <h1>{item.title}</h1>
-            {item.items.map((item: any, index: number) => (
-              <div key={index}>
-                <h2 dangerouslySetInnerHTML={{ __html: item.title }} />
-                <p dangerouslySetInnerHTML={{ __html: item.content }} />
-              </div>
-            ))}
-          </div>
-        </>
+      {data?.map((item: DataItem, index: number) => (
+        <div key={index} className={styles.main}>
+          <h1>{item.title}</h1>
+          {item.items.map((item: { content: string }, index: number) => (
+            <div key={index}>
+              <h2 />
+              <p dangerouslySetInnerHTML={{ __html: item.content }} />
+            </div>
+          ))}
+        </div>
       ))}
     </div>
   );
